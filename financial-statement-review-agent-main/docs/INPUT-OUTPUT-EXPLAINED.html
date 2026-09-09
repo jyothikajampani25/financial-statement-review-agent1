@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Input vs Output — FS Review Agent</title>
+  <style>
+    @page { size: A4; margin: 14mm 15mm; }
+    body { font-family: Helvetica, Arial, sans-serif; font-size: 12.5px; color: #152428; margin: 0; }
+    h1 { color: #0f4c5c; font-size: 20px; margin: 0 0 6px; }
+    h2 { color: #0f4c5c; font-size: 13.5px; border-bottom: 2px solid #0f4c5c; padding-bottom: 3px; }
+    .cover { border: 2px solid #0f4c5c; padding: 12px 16px; margin-bottom: 12px; }
+    .kicker { font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #5a7074; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .box { border: 1px solid #c2d4d6; padding: 10px 12px; }
+    .box.in { border-color: #0f4c5c; }
+    .box.out { border-color: #1f6f54; }
+    .box h3 { margin: 0 0 6px; color: #0f4c5c; }
+    .box.out h3 { color: #1f6f54; }
+    table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+    th, td { border: 1px solid #c2d4d6; padding: 5px 8px; text-align: left; vertical-align: top; }
+    th { background: #0f4c5c; color: #fff; }
+    .note { background: #eef6f6; border-left: 4px solid #0f4c5c; padding: 8px 10px; margin: 10px 0; }
+    .warn { background: #f6ebe6; border-left: 4px solid #8c3a2e; padding: 8px 10px; margin: 10px 0; }
+    ul { margin: 4px 0 8px; padding-left: 18px; }
+    code { font-size: 11px; }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <div class="kicker">Clarification sheet</div>
+    <h1>What is Input? What is Output?</h1>
+    <p>Financial Statement Review Agent — sample test files included</p>
+  </div>
+
+  <div class="warn">
+    <strong>Not PDF upload in this version.</strong>
+    We do <em>not</em> upload a PDF for AI to invent Profit &amp; Loss.
+    We feed structured BS + P&amp;L numbers. Rules check them. AI only explains evidence.
+  </div>
+
+  <div class="grid">
+    <div class="box in">
+      <h3>INPUT</h3>
+      <ul>
+        <li>CSV files with Balance Sheet + P&amp;L lines</li>
+        <li><strong>2 years</strong> (current + prior) — correct for YoY</li>
+        <li>Pick company pack in UI (or API JSON)</li>
+      </ul>
+      <p>Folder: <code>data/SAMPLE-TEST-PACK/input/</code></p>
+      <p>Example lines: Revenue, COGS, Total assets, Equity…</p>
+    </div>
+    <div class="box out">
+      <h3>OUTPUT</h3>
+      <ul>
+        <li>Pass / fail math checks</li>
+        <li>Balance Sheet identity check</li>
+        <li>Year-on-year variance flags</li>
+        <li>Review observations + evidence</li>
+        <li>run id · trace id · notifications log</li>
+      </ul>
+      <p>Folder: <code>data/SAMPLE-TEST-PACK/output-examples/</code></p>
+      <p>Same pack shown in UI tabs / API response</p>
+    </div>
+  </div>
+
+  <h2>Flow</h2>
+  <p><strong>CSV (2 years)</strong> → Validation + YoY rules → Findings → Observations (AI/templates) → <strong>Review pack</strong></p>
+
+  <div class="note">
+    <strong>Two years only?</strong> Yes — that is enough and intended.
+    Current year for checks; prior year for comparison. More years can be added later.
+  </div>
+
+  <h2>Test files to use</h2>
+  <table>
+    <tr><th>Input file</th><th>Purpose</th></tr>
+    <tr><td>acme_good_2022.csv / acme_good_2023.csv</td><td>Clean — expect Failed = 0</td></tr>
+    <tr><td>acme_broken_2022.csv / acme_broken_2023.csv</td><td>Broken — expect MATH + CONS fails</td></tr>
+    <tr><td>OUTPUT-clean-review-pack.json</td><td>Example output (clean)</td></tr>
+    <tr><td>OUTPUT-broken-review-pack.json</td><td>Example output (broken)</td></tr>
+  </table>
+
+  <p style="color:#5a7074;font-size:11px;margin-top:14px;">See also data/SAMPLE-TEST-PACK/README.md</p>
+</body>
+</html>

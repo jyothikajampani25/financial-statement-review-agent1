@@ -1,0 +1,10 @@
+{
+  "acme_good": {
+    "name": "Acme Demo Co (clean)",
+    "description": "Balances; totals add; material YoY revenue for demo"
+  },
+  "acme_broken": {
+    "name": "Acme Demo Co (broken)",
+    "description": "Math fail on TOTAL_ASSETS + Balance Sheet identity fail"
+  }
+}

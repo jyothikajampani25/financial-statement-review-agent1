@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Demo Script — Financial Statement Review Agent</title>
+  <style>
+    @page { size: A4; margin: 14mm 15mm 16mm 15mm; }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; color: #152428;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 12.5px; line-height: 1.45;
+    }
+    h1 { font-size: 20px; margin: 0 0 4px; color: #0f4c5c; }
+    h2 {
+      font-size: 13.5px; margin: 14px 0 6px; padding-bottom: 3px;
+      border-bottom: 2px solid #0f4c5c; color: #0f4c5c;
+    }
+    h3 { font-size: 12.5px; margin: 10px 0 4px; color: #0f4c5c; }
+    p { margin: 0 0 7px; }
+    ul, ol { margin: 0 0 8px; padding-left: 18px; }
+    li { margin: 0 0 4px; }
+    .cover { border: 2px solid #0f4c5c; padding: 14px 18px; margin-bottom: 12px; }
+    .kicker {
+      font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #5a7074; margin-bottom: 6px;
+    }
+    .subtitle { font-size: 13px; color: #0f4c5c; margin: 0 0 8px; }
+    table { width: 100%; border-collapse: collapse; margin: 6px 0 10px; font-size: 12px; }
+    th, td { border: 1px solid #c2d4d6; padding: 6px 8px; text-align: left; vertical-align: top; }
+    th { background: #0f4c5c; color: #fff; }
+    .say {
+      background: #eef6f6; border-left: 4px solid #0f4c5c;
+      padding: 8px 12px; margin: 6px 0 10px;
+    }
+    .do { border: 1px solid #c2d4d6; padding: 8px 10px; margin: 0 0 8px; }
+    .time { color: #5a7074; font-size: 11px; font-weight: 700; }
+    .footer-note { font-size: 10.5px; color: #5a7074; margin-top: 10px; }
+    .muted { color: #5a7074; font-size: 11px; }
+  </style>
+</head>
+<body>
+
+  <section class="cover">
+    <div class="kicker">Hackathon demo pack</div>
+    <h1>Financial Statement Review Agent</h1>
+    <p class="subtitle">2–3 minute live demo script · what to click · what to say</p>
+    <table>
+      <tr><th style="width:140px">Field</th><th>Value</th></tr>
+      <tr><td>Document</td><td>DEMO-SCRIPT-001</td></tr>
+      <tr><td>Duration</td><td>2–3 minutes live (+ optional 30s Q&amp;A setup)</td></tr>
+      <tr><td>Primary pack</td><td>Acme Demo Co (broken)</td></tr>
+      <tr><td>Backup pack</td><td>Acme Demo Co (clean)</td></tr>
+    </table>
+  </section>
+
+  <h2>1. Before you start (30 seconds silent prep)</h2>
+  <div class="do">
+    <ol>
+      <li>UI open: <code>streamlit run ui/app.py</code></li>
+      <li>Optional API tab: <code>http://localhost:8000/docs</code></li>
+      <li>Sidebar set to <strong>Acme Demo Co (broken)</strong>, years 2023 / 2022</li>
+      <li>PDFs ready if asked: BRD · HLD · Phase2</li>
+    </ol>
+  </div>
+
+  <h2>2. Live script (speak this)</h2>
+
+  <h3><span class="time">0:00–0:25</span> · Problem</h3>
+  <div class="say">
+    “Financial statements still need manual review for math accuracy, year-on-year change, and consistency.
+    That is slow and easy to miss. We built an AI-assisted review agent that checks the numbers with rules,
+    explains findings with evidence, and can plug into any system through an API.”
+  </div>
+
+  <h3><span class="time">0:25–0:45</span> · How it works (one sentence architecture)</h3>
+  <div class="say">
+    “Rules own the numbers — totals and Balance Sheet identity. GenAI only writes the review wording from those results.
+    It never invents amounts. The UI is one client; the same review runs over REST for ERP, chat, or batch.”
+  </div>
+  <p class="muted">Point at sidebar Integration block for 2 seconds.</p>
+
+  <h3><span class="time">0:45–1:30</span> · Live run (broken pack)</h3>
+  <div class="do">
+    <p><strong>Click:</strong> Company = broken → <strong>Run review</strong></p>
+  </div>
+  <div class="say">
+    “On a broken pack we detect math failure on total assets and a Balance Sheet that does not balance —
+    Assets not equal to Liabilities plus Equity — with expected versus actual evidence.”
+  </div>
+  <div class="do">
+    <p><strong>Click:</strong> Findings tab → scroll to red MATH-TOTAL_ASSETS and CONS-01</p>
+    <p><strong>Click:</strong> YoY variances → Revenue</p>
+    <p><strong>Click:</strong> Observations → read one line → click Useful</p>
+  </div>
+  <div class="say">
+    “Year-on-year, revenue jumped about forty percent, so we flag it as material.
+    Observations cite the check ids. Reviewer feedback is stored so we can improve wording over time.”
+  </div>
+
+  <h3><span class="time">1:30–2:00</span> · Platform / crack points</h3>
+  <div class="say">
+    “Every run has a trace id. Completion and critical fails are notified — logged now, email or webhook when configured.
+    Health endpoint tells ops if the service is down. Under load we can queue reviews; demo path is sync for speed.”
+  </div>
+  <div class="do">
+    <p><strong>Optional click:</strong> Notifications tab · or browser <code>/health</code> · or Swagger <code>POST /reviews</code></p>
+  </div>
+
+  <h3><span class="time">2:00–2:20</span> · Close</h3>
+  <div class="say">
+    “We followed BRD → HLD → build with MVC services, tests, and CI.
+    This is assistive review — not a statutory audit opinion — but it cuts review time and leaves an evidence trail.
+    Happy to walk the architecture or the clean pack next.”
+  </div>
+
+  <h2>3. If judges ask</h2>
+  <table>
+    <tr><th>Question</th><th>Answer</th></tr>
+    <tr><td>Why DEGRADED?</td><td>No OpenAI key — templates still cite evidence. With a key, GenAI wording turns on.</td></tr>
+    <tr><td>Is this an audit?</td><td>No. Assistive review tool only.</td></tr>
+    <tr><td>Real data?</td><td>Demo fixtures now; Kaggle / client CSV maps to the same line codes.</td></tr>
+    <tr><td>Scale?</td><td>API + queue workers; UI stays a thin client.</td></tr>
+    <tr><td>Why not pure LLM?</td><td>Hallucinated totals are unsafe. Rules first, language second.</td></tr>
+  </table>
+
+  <h2>4. Slide order (5–7 slides)</h2>
+  <ol>
+    <li>Problem — manual FS review is slow / error-prone</li>
+    <li>Solution — rules + evidence + GenAI observations</li>
+    <li>Architecture — MVC · services · API-first (from HLD)</li>
+    <li>Live demo — broken pack screenshots or screen share</li>
+    <li>Platform — health · notify · feedback · integrate</li>
+    <li>SDLC — BRD → HLD → code → tests → CI</li>
+    <li>Roadmap — Kaggle breadth · deploy · Teams/Slack webhook</li>
+  </ol>
+
+  <p class="footer-note">DEMO-SCRIPT-001 · Financial Statement Review Agent · Use with UI on broken pack · Keep under 3 minutes.</p>
+</body>
+</html>

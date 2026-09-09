@@ -1,0 +1,21 @@
+code,name,statement,amount
+CASH,Cash and equivalents,BS,40000
+AR,Accounts receivable,BS,35000
+INVENTORY,Inventory,BS,25000
+TOTAL_CA,Total current assets,BS,100000
+FA,Fixed assets,BS,200000
+TOTAL_ASSETS,Total assets,BS,300000
+AP,Accounts payable,BS,30000
+ST_DEBT,Short-term debt,BS,20000
+TOTAL_CL,Total current liabilities,BS,50000
+LT_DEBT,Long-term debt,BS,100000
+TOTAL_LIAB,Total liabilities,BS,150000
+EQUITY,Shareholders equity,BS,150000
+REVENUE,Revenue,PL,100000
+COGS,Cost of goods sold,PL,-60000
+GROSS_PROFIT,Gross profit,PL,40000
+OPEX,Operating expenses,PL,-20000
+OPERATING_INCOME,Operating income,PL,20000
+INTEREST,Interest expense,PL,-2000
+TAX,Income tax,PL,-3000
+NET_INCOME,Net income,PL,15000

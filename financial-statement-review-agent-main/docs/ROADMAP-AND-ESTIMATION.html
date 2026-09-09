@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Roadmap &amp; Estimation — FS Review Agent</title>
+  <style>
+    @page { size: A4; margin: 14mm 15mm; }
+    body { font-family: Helvetica, Arial, sans-serif; font-size: 12.5px; color: #152428; margin: 0; }
+    h1 { color: #0f4c5c; font-size: 20px; margin: 0 0 4px; }
+    h2 { color: #0f4c5c; font-size: 13.5px; border-bottom: 2px solid #0f4c5c; padding-bottom: 3px; margin: 12px 0 6px; }
+    .cover { border: 2px solid #0f4c5c; padding: 12px 16px; margin-bottom: 10px; }
+    .kicker { font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #5a7074; }
+    table { width: 100%; border-collapse: collapse; margin: 6px 0 10px; font-size: 12px; }
+    th, td { border: 1px solid #c2d4d6; padding: 5px 8px; text-align: left; vertical-align: top; }
+    th { background: #0f4c5c; color: #fff; }
+    .callout { background: #eef6f6; border-left: 4px solid #0f4c5c; padding: 8px 10px; margin: 8px 0; }
+    .footer-note { font-size: 10.5px; color: #5a7074; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <div class="kicker">Estimation · roadmap · hackathon weightage</div>
+    <h1>Financial Statement Review Agent</h1>
+    <p>What we built · effort · what comes next</p>
+  </div>
+
+  <h2>1. Development estimation (this hackathon build)</h2>
+  <table>
+    <tr><th>Workstream</th><th>Effort (indicative)</th><th>Status</th></tr>
+    <tr><td>BRD / HLD / Phase2 / tech docs</td><td>0.5–1 day</td><td>Done</td></tr>
+    <tr><td>MVC core (validation, YoY, observation, notify)</td><td>1 day</td><td>Done</td></tr>
+    <tr><td>UI + upload pipeline + ops alerts</td><td>0.5 day</td><td>Done</td></tr>
+    <tr><td>API, tests, CI</td><td>0.5 day</td><td>Done</td></tr>
+    <tr><td>Demo script + use-case + sample packs</td><td>0.25 day</td><td>Done</td></tr>
+    <tr><td><strong>Total to demo-ready</strong></td><td><strong>~3 days equivalent</strong></td><td>Ready to deploy</td></tr>
+  </table>
+
+  <h2>2. Roadmap (post-demo / production)</h2>
+  <table>
+    <tr><th>Phase</th><th>Items</th><th>Value</th></tr>
+    <tr><td>P1 — Deploy</td><td>Streamlit Cloud UI · optional API host · secrets for OpenAI</td><td>Public demo link</td></tr>
+    <tr><td>P2 — Data breadth</td><td>More companies · Kaggle extract · Excel upload</td><td>Sample breadth score</td></tr>
+    <tr><td>P3 — Scale</td><td>Queue + workers · S3 · Postgres · async 202 + run_id</td><td>Traffic / prod story</td></tr>
+    <tr><td>P4 — Integrate</td><td>ERP webhook · Teams/Slack bot · SSO</td><td>Integration alternatives</td></tr>
+    <tr><td>P5 — Ingest</td><td>Optional PDF/table extract → same CSV codes</td><td>Real statement intake</td></tr>
+  </table>
+
+  <h2>3. Weightage checklist (covered)</h2>
+  <table>
+    <tr><th>Judge theme</th><th>How we cover it</th></tr>
+    <tr><td>Use case clarity</td><td>USE-CASE + BRD + live broken pack</td></tr>
+    <tr><td>Architecture + alternatives</td><td>HLD · TECH · rules-first vs pure LLM rejected</td></tr>
+    <tr><td>UI / UX</td><td>Sample · Upload · Ops tabs</td></tr>
+    <tr><td>Code quality</td><td>MVC services · pytest · CI</td></tr>
+    <tr><td>Model / evaluation</td><td>Rule accuracy tests · evidence-bound GenAI</td></tr>
+    <tr><td>Deploy / integrate</td><td>API-first · Streamlit deploy · webhooks</td></tr>
+    <tr><td>Monitoring</td><td>Health · notify log · down alert</td></tr>
+    <tr><td>Estimation / roadmap</td><td>This document</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>Next action:</strong> commit repo → deploy Streamlit (main file <code>ui/app.py</code>) → practice DEMO-SCRIPT on the public URL.
+  </div>
+
+  <p class="footer-note">ROADMAP-001 · Financial Statement Review Agent · 9 September 2026</p>
+</body>
+</html>

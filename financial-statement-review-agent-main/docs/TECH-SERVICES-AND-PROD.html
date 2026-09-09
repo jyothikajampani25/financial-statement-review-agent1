@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Technical Design — Services & Production</title>
+  <style>
+    @page { size: A4; margin: 13mm 14mm 14mm 14mm; }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; color: #152428;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 12px; line-height: 1.42;
+    }
+    h1 { font-size: 19px; margin: 0 0 4px; color: #0f4c5c; }
+    h2 {
+      font-size: 13px; margin: 11px 0 5px; padding-bottom: 3px;
+      border-bottom: 2px solid #0f4c5c; color: #0f4c5c;
+    }
+    h3 { font-size: 12px; margin: 8px 0 4px; color: #0f4c5c; }
+    p { margin: 0 0 6px; }
+    ul { margin: 0 0 7px; padding-left: 18px; }
+    li { margin: 0 0 2px; }
+    .cover { border: 2px solid #0f4c5c; padding: 11px 14px; margin-bottom: 8px; }
+    .kicker {
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #5a7074; margin-bottom: 4px;
+    }
+    .subtitle { font-size: 12.5px; color: #0f4c5c; margin: 0 0 6px; }
+    table { width: 100%; border-collapse: collapse; margin: 4px 0 8px; font-size: 11.5px; }
+    th, td { border: 1px solid #c2d4d6; padding: 4px 7px; text-align: left; vertical-align: top; }
+    th { background: #0f4c5c; color: #fff; font-weight: 600; }
+    .callout {
+      background: #eef6f6; border-left: 4px solid #0f4c5c;
+      padding: 7px 10px; margin: 5px 0 8px;
+    }
+    .flow {
+      border: 1px solid #c2d4d6; background: #f7fafa; padding: 8px 10px;
+      margin: 5px 0 8px; font-family: Menlo, Consolas, monospace; font-size: 10.5px;
+      white-space: pre-wrap; line-height: 1.4;
+    }
+    .caption { text-align: center; color: #5a7074; font-size: 10.5px; margin: 2px 0 6px; }
+    .footer-note { font-size: 10px; color: #5a7074; margin-top: 6px; }
+    .page-break { break-before: page; page-break-before: always; }
+    code { font-size: 10.5px; }
+    .muted { color: #5a7074; font-size: 10.5px; }
+  </style>
+</head>
+<body>
+
+  <section class="cover">
+    <div class="kicker">Technical design · coding map · production</div>
+    <h1>Financial Statement Review Agent</h1>
+    <p class="subtitle">What each service does · local vs prod · where GenAI sits</p>
+    <table>
+      <tr><th style="width:130px">Field</th><th>Value</th></tr>
+      <tr><td>Document</td><td>TECH-001 · Version 1.1</td></tr>
+      <tr><td>Date</td><td>9 September 2026</td></tr>
+      <tr><td>Input</td><td>BRD / HLD / running codebase</td></tr>
+    </table>
+  </section>
+
+  <h2>1. Coding map (MVC + services)</h2>
+  <table>
+    <thead>
+      <tr><th style="width:120px">Layer</th><th>Path</th><th>Does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>View</td><td><code>ui/app.py</code></td><td>Sample review · upload UI · ops / alerts</td></tr>
+      <tr><td>Controller</td><td><code>api/main.py</code></td><td>REST: reviews, upload, health, feedback, alerts</td></tr>
+      <tr><td>Orchestrator</td><td><code>src/services/review.py</code></td><td>Calls services in order; saves run pack</td></tr>
+      <tr><td>Model</td><td><code>src/models.py</code></td><td>Pydantic DTOs (Finding, ReviewPack, …)</td></tr>
+      <tr><td>Store</td><td><code>src/store.py</code></td><td>Load/parse CSV · save uploads · log tail</td></tr>
+      <tr><td>Config</td><td><code>src/config.py</code></td><td>Env, thresholds, math rules</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. Services — what each one does</h2>
+  <table>
+    <thead>
+      <tr><th style="width:130px">Service</th><th>File</th><th>Responsibility</th><th>GenAI?</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Validation</td>
+        <td><code>validation.py</code></td>
+        <td>Match formulas (totals) + Balance Sheet identity (Assets = L+E). Emits pass/fail findings with expected/actual + evidence.</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td>YoY</td>
+        <td><code>yoy.py</code></td>
+        <td>Compare current vs prior lines. Flags material % / absolute change. Headline lines become findings for comments.</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td>Observation</td>
+        <td><code>observation.py</code></td>
+        <td>Turns findings into short review text. Uses OpenAI if key set; else evidence templates. Must not invent amounts.</td>
+        <td><strong>Yes</strong></td>
+      </tr>
+      <tr>
+        <td>Notify</td>
+        <td><code>notify.py</code></td>
+        <td>On complete / critical fail: write log, optional email, optional webhook.</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td>Health</td>
+        <td><code>health.py</code></td>
+        <td><code>GET /health</code> status. <code>trigger_down_alert()</code> for ops when service is down / demo alert.</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td>Review</td>
+        <td><code>review.py</code></td>
+        <td><code>build_review_pack</code>: validate → YoY → observe → notify → save JSON audit.</td>
+        <td>Calls observation</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>GenAI used only here:</strong> observation wording.
+    Numbers and pass/fail always come from validation + YoY rules.
+  </div>
+
+  <h2>3. Local runtime pipeline</h2>
+  <div class="flow">Upload / sample CSV
+  → save_upload() → data/runtime/uploads/  (+ optional PDF → documents/)
+  → parse_csv_bytes() → StatementBundle
+  → validate_all() → findings
+  → compare_yoy() → variances + YoY findings
+  → write_observations() → GenAI or templates
+  → notify_review_events() → notifications.log
+  → save_pack() → data/runtime/runs/run-*.json</div>
+  <p class="caption">Optional PDF is stored for audit only — not OCR’d into numbers in v1.</p>
+
+  <h2>4. Local storage map</h2>
+  <table>
+    <thead>
+      <tr><th>Path</th><th>Contents</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>data/sample/</code></td><td>Built-in demo CSVs</td></tr>
+      <tr><td><code>data/runtime/uploads/</code></td><td>Uploaded statement CSVs</td></tr>
+      <tr><td><code>data/runtime/documents/</code></td><td>Supporting PDFs (store only)</td></tr>
+      <tr><td><code>data/runtime/runs/</code></td><td>Review pack JSON (audit)</td></tr>
+      <tr><td><code>data/runtime/notifications.log</code></td><td>Complete / critical / health-down alerts</td></tr>
+      <tr><td><code>data/runtime/feedback.jsonl</code></td><td>Useful / not useful votes</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <h2>5. Production architecture (target)</h2>
+  <p>Same services. Stronger plumbing for files, jobs, DB, and ops.</p>
+  <div class="flow">Client / ERP / UI
+    → API  POST /reviews/upload
+    → Save files to S3  (csv/ + documents/)
+    → Enqueue review job  (SQS / Redis / similar)
+    → Workers: parse → validate → YoY → observations
+    → Save pack to Postgres (+ pack JSON to S3)
+    → Notify  (email / webhook / Slack)
+    → If GET /health fails → auto alert ops
+       (PagerDuty / email / on-call)</div>
+
+  <h3>5.1 Two CSVs uploaded — what does the client get?</h3>
+  <table>
+    <thead>
+      <tr><th>Mode</th><th>Behaviour</th><th>Response</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Local / demo (now)</strong></td>
+        <td><strong>Sync</strong> — both CSVs required (current + prior). Pipeline runs in the same request.</td>
+        <td>Full <code>ReviewPack</code> JSON / UI tabs when done</td>
+      </tr>
+      <tr>
+        <td><strong>Prod · many live requests</strong></td>
+        <td><strong>Async</strong> — accept upload fast; do not hold HTTP open for GenAI.</td>
+        <td><code>202 Accepted</code> + <code>run_id</code> → poll <code>GET /reviews/{id}</code> or webhook push</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="flow">Many uploads at once
+  → API saves files + enqueues job  (returns run_id immediately)
+  → N workers process jobs in parallel
+  → Pack saved → notify user/system
+  → Client fetches pack by run_id</div>
+  <p class="muted">Same 2 CSVs and same services — only sync vs queue changes under load.</p>
+
+  <h3>5.2 Local vs prod</h3>
+  <table>
+    <thead>
+      <tr><th>Concern</th><th>Local (now)</th><th>Production</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Files</td><td>Disk under <code>data/runtime/</code></td><td>S3 / Azure Blob / GCS</td></tr>
+      <tr><td>Review packs</td><td>JSON files</td><td>Postgres (+ S3 object)</td></tr>
+      <tr><td>Jobs</td><td>Sync in API/UI process</td><td>Queue + worker pods</td></tr>
+      <tr><td>Alerts</td><td>Log (+ optional SMTP)</td><td>Monitored health → Slack/email/PagerDuty</td></tr>
+      <tr><td>Secrets</td><td><code>.env</code></td><td>Secret Manager / Key Vault</td></tr>
+      <tr><td>API / UI</td><td>localhost</td><td>Containers + load balancer</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5.3 Main API contracts (integrate anywhere)</h3>
+  <table>
+    <thead>
+      <tr><th>Endpoint</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>POST /reviews</code></td><td>Run review on sample/stored company ids</td></tr>
+      <tr><td><code>POST /reviews/upload</code></td><td>Upload current+prior CSV (+ optional PDF)</td></tr>
+      <tr><td><code>GET /reviews/{id}</code></td><td>Fetch audit pack</td></tr>
+      <tr><td><code>GET /health</code></td><td>Liveness for LB / monitors</td></tr>
+      <tr><td><code>POST /alerts/health-down</code></td><td>Ops / demo: fire downtime alert</td></tr>
+      <tr><td><code>POST /feedback</code></td><td>Observation useful / not useful</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <h2>6. Algorithms &amp; optimizations (judge advantage)</h2>
+  <p>We do <strong>not</strong> “search a PDF with AI” for totals. We use fast, deterministic algorithms first — that is the accuracy advantage.</p>
+
+  <h3>6.1 Line lookup — O(1) dictionary, not search</h3>
+  <div class="callout">
+    After parse, lines become a map <code>code → amount</code> (<code>lines_by_code</code>).
+    Every formula looks up codes in <strong>O(1)</strong> average time — no scanning the whole sheet each time, no fuzzy text search.
+  </div>
+
+  <h3>6.2 Math engine — rule table (match formulas)</h3>
+  <p>Preconfigured parent → children rules (example):</p>
+  <div class="flow">TOTAL_CA     = CASH + AR + INVENTORY
+TOTAL_ASSETS = TOTAL_CA + FA
+GROSS_PROFIT = REVENUE + COGS   (COGS negative)
+NET_INCOME   = OPERATING_INCOME + INTEREST + TAX
+…</div>
+  <p><strong>Algorithm:</strong> for each rule, <code>expected = sum(children)</code>; compare to reported parent within <code>epsilon</code>.  
+  Complexity ~ <strong>O(R + L)</strong> where R = rules, L = lines — tiny and predictable.</p>
+
+  <h3>6.3 Consistency — Balance Sheet identity</h3>
+  <div class="flow">diff = TOTAL_ASSETS − (TOTAL_LIAB + EQUITY)
+if |diff| > epsilon → FAIL CONS-01</div>
+  <p>One equation, hard fail — no ML needed.</p>
+
+  <h3>6.4 YoY materiality — threshold algorithm</h3>
+  <div class="flow">abs_chg = current − prior
+pct_chg = abs_chg / |prior|     (guard prior ≈ 0)
+material if |pct| ≥ threshold (default 20%)
+         OR |abs_chg| ≥ absolute floor</div>
+  <p><strong>Optimization:</strong> only <em>headline</em> codes (Revenue, Gross profit, Net income, Total assets, …) become observation findings — full variance list still kept for analysis.  
+  That cuts GenAI/template noise and cost.</p>
+
+  <h3>6.5 Pipeline optimization</h3>
+  <table>
+    <thead>
+      <tr><th>Idea</th><th>Why it helps</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Rules before GenAI</td><td>Numbers never hallucinated; LLM only explains findings</td></tr>
+      <tr><td>Validate ∥ YoY (prod workers)</td><td>Independent stages can run in parallel; observations wait for both</td></tr>
+      <tr><td>Async queue under load</td><td>API stays fast; GenAI latency does not block other users</td></tr>
+      <tr><td>Headline filter</td><td>Fewer observation calls → lower cost / cleaner review pack</td></tr>
+      <tr><td>Idempotency (prod)</td><td>Same company+years+file hash → reuse pack; avoid double GenAI spend</td></tr>
+      <tr><td>Evidence chips from findings</td><td>No second “search” step — evidence already attached to the check</td></tr>
+    </tbody>
+  </table>
+
+  <h3>6.6 What to say in the demo (30 seconds)</h3>
+  <div class="callout">
+    “Lookup is by line code map, not AI search. Math and Balance Sheet identity are formula algorithms.
+    YoY uses a threshold rule. GenAI only writes comments on those results.
+    Under traffic we queue jobs so many uploads get a run_id immediately and results are fetched when ready.”
+  </div>
+
+  <h2>7. Tests (what we coded for quality)</h2>
+  <ul>
+    <li><code>tests/test_review.py</code> — clean pack passes; broken pack MATH + CONS fail; YoY revenue material; pack has trace; feedback + health</li>
+    <li>CI: <code>.github/workflows/ci.yml</code> — install → ingest check → pytest → import API</li>
+  </ul>
+
+  <h2>8. One-line summary for judges</h2>
+  <div class="callout">
+    We coded MVC services where rules own numbers and GenAI only writes observations;
+    local sync returns the full pack; production queues many uploads, stores files in S3,
+    runs workers with formula + threshold algorithms first, then notifies and alerts on health failure.
+  </div>
+
+  <p class="footer-note">
+    TECH-001 v1.1 · Financial Statement Review Agent · Pair with HLD + USE-CASE-EXPLAINED + DEMO-SCRIPT.
+  </p>
+</body>
+</html>

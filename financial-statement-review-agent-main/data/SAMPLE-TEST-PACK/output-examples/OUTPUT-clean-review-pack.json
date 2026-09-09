@@ -1,0 +1,647 @@
+{
+  "run_id": "run-6921c2997793",
+  "trace_id": "trc-3f616cf1b975",
+  "company_id": "acme_good",
+  "company_name": "Acme Demo Co (clean)",
+  "current_year": 2023,
+  "prior_year": 2022,
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "material_variances": 20
+  },
+  "findings": [
+    {
+      "check_id": "MATH-TOTAL_CA",
+      "status": "pass",
+      "message": "Total current assets adds correctly.",
+      "expected": 125000.0,
+      "actual": 125000.0,
+      "evidence": [
+        {
+          "line_code": "CASH",
+          "line_name": "Cash and equivalents",
+          "year": 2023,
+          "amount": 50000.0
+        },
+        {
+          "line_code": "AR",
+          "line_name": "Accounts receivable",
+          "year": 2023,
+          "amount": 45000.0
+        },
+        {
+          "line_code": "INVENTORY",
+          "line_name": "Inventory",
+          "year": 2023,
+          "amount": 30000.0
+        },
+        {
+          "line_code": "TOTAL_CA",
+          "line_name": "Total current assets",
+          "year": 2023,
+          "amount": 125000.0
+        }
+      ]
+    },
+    {
+      "check_id": "MATH-TOTAL_ASSETS",
+      "status": "pass",
+      "message": "Total assets adds correctly.",
+      "expected": 350000.0,
+      "actual": 350000.0,
+      "evidence": [
+        {
+          "line_code": "TOTAL_CA",
+          "line_name": "Total current assets",
+          "year": 2023,
+          "amount": 125000.0
+        },
+        {
+          "line_code": "FA",
+          "line_name": "Fixed assets",
+          "year": 2023,
+          "amount": 225000.0
+        },
+        {
+          "line_code": "TOTAL_ASSETS",
+          "line_name": "Total assets",
+          "year": 2023,
+          "amount": 350000.0
+        }
+      ]
+    },
+    {
+      "check_id": "MATH-TOTAL_CL",
+      "status": "pass",
+      "message": "Total current liabilities adds correctly.",
+      "expected": 60000.0,
+      "actual": 60000.0,
+      "evidence": [
+        {
+          "line_code": "AP",
+          "line_name": "Accounts payable",
+          "year": 2023,
+          "amount": 35000.0
+        },
+        {
+          "line_code": "ST_DEBT",
+          "line_name": "Short-term debt",
+          "year": 2023,
+          "amount": 25000.0
+        },
+        {
+          "line_code": "TOTAL_CL",
+          "line_name": "Total current liabilities",
+          "year": 2023,
+          "amount": 60000.0
+        }
+      ]
+    },
+    {
+      "check_id": "MATH-TOTAL_LIAB",
+      "status": "pass",
+      "message": "Total liabilities adds correctly.",
+      "expected": 170000.0,
+      "actual": 170000.0,
+      "evidence": [
+        {
+          "line_code": "TOTAL_CL",
+          "line_name": "Total current liabilities",
+          "year": 2023,
+          "amount": 60000.0
+        },
+        {
+          "line_code": "LT_DEBT",
+          "line_name": "Long-term debt",
+          "year": 2023,
+          "amount": 110000.0
+        },
+        {
+          "line_code": "TOTAL_LIAB",
+          "line_name": "Total liabilities",
+          "year": 2023,
+          "amount": 170000.0
+        }
+      ]
+    },
+    {
+      "check_id": "MATH-GROSS_PROFIT",
+      "status": "pass",
+      "message": "Gross profit adds correctly.",
+      "expected": 60000.0,
+      "actual": 60000.0,
+      "evidence": [
+        {
+          "line_code": "REVENUE",
+          "line_name": "Revenue",
+          "year": 2023,
+          "amount": 140000.0
+        },
+        {
+          "line_code": "COGS",
+          "line_name": "Cost of goods sold",
+          "year": 2023,
+          "amount": -80000.0
+        },
+        {
+          "line_code": "GROSS_PROFIT",
+          "line_name": "Gross profit",
+          "year": 2023,
+          "amount": 60000.0
+        }
+      ]
+    },
+    {
+      "check_id": "MATH-OPERATING_INCOME",
+      "status": "pass",
+      "message": "Operating income adds correctly.",
+      "expected": 35000.0,
+      "actual": 35000.0,
+      "evidence": [
+        {
+          "line_code": "GROSS_PROFIT",
+          "line_name": "Gross profit",
+          "year": 2023,
+          "amount": 60000.0
+        },
+        {
+          "line_code": "OPEX",
+          "line_name": "Operating expenses",
+          "year": 2023,
+          "amount": -25000.0
+        },
+        {
+          "line_code": "OPERATING_INCOME",
+          "line_name": "Operating income",
+          "year": 2023,
+          "amount": 35000.0
+        }
+      ]
+    },
+    {
+      "check_id": "MATH-NET_INCOME",
+      "status": "pass",
+      "message": "Net income adds correctly.",
+      "expected": 27000.0,
+      "actual": 27000.0,
+      "evidence": [
+        {
+          "line_code": "OPERATING_INCOME",
+          "line_name": "Operating income",
+          "year": 2023,
+          "amount": 35000.0
+        },
+        {
+          "line_code": "INTEREST",
+          "line_name": "Interest expense",
+          "year": 2023,
+          "amount": -3000.0
+        },
+        {
+          "line_code": "TAX",
+          "line_name": "Income tax",
+          "year": 2023,
+          "amount": -5000.0
+        },
+        {
+          "line_code": "NET_INCOME",
+          "line_name": "Net income",
+          "year": 2023,
+          "amount": 27000.0
+        }
+      ]
+    },
+    {
+      "check_id": "CONS-01",
+      "status": "pass",
+      "message": "Balance Sheet identity holds: Assets = Liabilities + Equity.",
+      "expected": 0.0,
+      "actual": 0.0,
+      "evidence": [
+        {
+          "line_code": "TOTAL_ASSETS",
+          "line_name": "Total assets",
+          "year": 2023,
+          "amount": 350000.0
+        },
+        {
+          "line_code": "TOTAL_LIAB",
+          "line_name": "Total liabilities",
+          "year": 2023,
+          "amount": 170000.0
+        },
+        {
+          "line_code": "EQUITY",
+          "line_name": "Shareholders equity",
+          "year": 2023,
+          "amount": 180000.0
+        }
+      ]
+    },
+    {
+      "check_id": "YOY-EQUITY",
+      "status": "material",
+      "message": "Shareholders equity moved 20.0% YoY (150,000 → 180,000).",
+      "expected": 150000.0,
+      "actual": 180000.0,
+      "evidence": [
+        {
+          "line_code": "EQUITY",
+          "line_name": "Shareholders equity",
+          "year": 2022,
+          "amount": 150000.0
+        },
+        {
+          "line_code": "EQUITY",
+          "line_name": "Shareholders equity",
+          "year": 2023,
+          "amount": 180000.0
+        }
+      ]
+    },
+    {
+      "check_id": "YOY-GROSS_PROFIT",
+      "status": "material",
+      "message": "Gross profit moved 50.0% YoY (40,000 → 60,000).",
+      "expected": 40000.0,
+      "actual": 60000.0,
+      "evidence": [
+        {
+          "line_code": "GROSS_PROFIT",
+          "line_name": "Gross profit",
+          "year": 2022,
+          "amount": 40000.0
+        },
+        {
+          "line_code": "GROSS_PROFIT",
+          "line_name": "Gross profit",
+          "year": 2023,
+          "amount": 60000.0
+        }
+      ]
+    },
+    {
+      "check_id": "YOY-NET_INCOME",
+      "status": "material",
+      "message": "Net income moved 80.0% YoY (15,000 → 27,000).",
+      "expected": 15000.0,
+      "actual": 27000.0,
+      "evidence": [
+        {
+          "line_code": "NET_INCOME",
+          "line_name": "Net income",
+          "year": 2022,
+          "amount": 15000.0
+        },
+        {
+          "line_code": "NET_INCOME",
+          "line_name": "Net income",
+          "year": 2023,
+          "amount": 27000.0
+        }
+      ]
+    },
+    {
+      "check_id": "YOY-OPERATING_INCOME",
+      "status": "material",
+      "message": "Operating income moved 75.0% YoY (20,000 → 35,000).",
+      "expected": 20000.0,
+      "actual": 35000.0,
+      "evidence": [
+        {
+          "line_code": "OPERATING_INCOME",
+          "line_name": "Operating income",
+          "year": 2022,
+          "amount": 20000.0
+        },
+        {
+          "line_code": "OPERATING_INCOME",
+          "line_name": "Operating income",
+          "year": 2023,
+          "amount": 35000.0
+        }
+      ]
+    },
+    {
+      "check_id": "YOY-REVENUE",
+      "status": "material",
+      "message": "Revenue moved 40.0% YoY (100,000 → 140,000).",
+      "expected": 100000.0,
+      "actual": 140000.0,
+      "evidence": [
+        {
+          "line_code": "REVENUE",
+          "line_name": "Revenue",
+          "year": 2022,
+          "amount": 100000.0
+        },
+        {
+          "line_code": "REVENUE",
+          "line_name": "Revenue",
+          "year": 2023,
+          "amount": 140000.0
+        }
+      ]
+    },
+    {
+      "check_id": "YOY-TOTAL_ASSETS",
+      "status": "material",
+      "message": "Total assets moved 16.7% YoY (300,000 → 350,000).",
+      "expected": 300000.0,
+      "actual": 350000.0,
+      "evidence": [
+        {
+          "line_code": "TOTAL_ASSETS",
+          "line_name": "Total assets",
+          "year": 2022,
+          "amount": 300000.0
+        },
+        {
+          "line_code": "TOTAL_ASSETS",
+          "line_name": "Total assets",
+          "year": 2023,
+          "amount": 350000.0
+        }
+      ]
+    },
+    {
+      "check_id": "YOY-TOTAL_LIAB",
+      "status": "material",
+      "message": "Total liabilities moved 13.3% YoY (150,000 → 170,000).",
+      "expected": 150000.0,
+      "actual": 170000.0,
+      "evidence": [
+        {
+          "line_code": "TOTAL_LIAB",
+          "line_name": "Total liabilities",
+          "year": 2022,
+          "amount": 150000.0
+        },
+        {
+          "line_code": "TOTAL_LIAB",
+          "line_name": "Total liabilities",
+          "year": 2023,
+          "amount": 170000.0
+        }
+      ]
+    }
+  ],
+  "variances": [
+    {
+      "line_code": "AP",
+      "line_name": "Accounts payable",
+      "prior": 30000.0,
+      "current": 35000.0,
+      "abs_change": 5000.0,
+      "pct_change": 0.1667,
+      "material": true
+    },
+    {
+      "line_code": "AR",
+      "line_name": "Accounts receivable",
+      "prior": 35000.0,
+      "current": 45000.0,
+      "abs_change": 10000.0,
+      "pct_change": 0.2857,
+      "material": true
+    },
+    {
+      "line_code": "CASH",
+      "line_name": "Cash and equivalents",
+      "prior": 40000.0,
+      "current": 50000.0,
+      "abs_change": 10000.0,
+      "pct_change": 0.25,
+      "material": true
+    },
+    {
+      "line_code": "COGS",
+      "line_name": "Cost of goods sold",
+      "prior": -60000.0,
+      "current": -80000.0,
+      "abs_change": -20000.0,
+      "pct_change": -0.3333,
+      "material": true
+    },
+    {
+      "line_code": "EQUITY",
+      "line_name": "Shareholders equity",
+      "prior": 150000.0,
+      "current": 180000.0,
+      "abs_change": 30000.0,
+      "pct_change": 0.2,
+      "material": true
+    },
+    {
+      "line_code": "FA",
+      "line_name": "Fixed assets",
+      "prior": 200000.0,
+      "current": 225000.0,
+      "abs_change": 25000.0,
+      "pct_change": 0.125,
+      "material": true
+    },
+    {
+      "line_code": "GROSS_PROFIT",
+      "line_name": "Gross profit",
+      "prior": 40000.0,
+      "current": 60000.0,
+      "abs_change": 20000.0,
+      "pct_change": 0.5,
+      "material": true
+    },
+    {
+      "line_code": "INTEREST",
+      "line_name": "Interest expense",
+      "prior": -2000.0,
+      "current": -3000.0,
+      "abs_change": -1000.0,
+      "pct_change": -0.5,
+      "material": true
+    },
+    {
+      "line_code": "INVENTORY",
+      "line_name": "Inventory",
+      "prior": 25000.0,
+      "current": 30000.0,
+      "abs_change": 5000.0,
+      "pct_change": 0.2,
+      "material": true
+    },
+    {
+      "line_code": "LT_DEBT",
+      "line_name": "Long-term debt",
+      "prior": 100000.0,
+      "current": 110000.0,
+      "abs_change": 10000.0,
+      "pct_change": 0.1,
+      "material": true
+    },
+    {
+      "line_code": "NET_INCOME",
+      "line_name": "Net income",
+      "prior": 15000.0,
+      "current": 27000.0,
+      "abs_change": 12000.0,
+      "pct_change": 0.8,
+      "material": true
+    },
+    {
+      "line_code": "OPERATING_INCOME",
+      "line_name": "Operating income",
+      "prior": 20000.0,
+      "current": 35000.0,
+      "abs_change": 15000.0,
+      "pct_change": 0.75,
+      "material": true
+    },
+    {
+      "line_code": "OPEX",
+      "line_name": "Operating expenses",
+      "prior": -20000.0,
+      "current": -25000.0,
+      "abs_change": -5000.0,
+      "pct_change": -0.25,
+      "material": true
+    },
+    {
+      "line_code": "REVENUE",
+      "line_name": "Revenue",
+      "prior": 100000.0,
+      "current": 140000.0,
+      "abs_change": 40000.0,
+      "pct_change": 0.4,
+      "material": true
+    },
+    {
+      "line_code": "ST_DEBT",
+      "line_name": "Short-term debt",
+      "prior": 20000.0,
+      "current": 25000.0,
+      "abs_change": 5000.0,
+      "pct_change": 0.25,
+      "material": true
+    },
+    {
+      "line_code": "TAX",
+      "line_name": "Income tax",
+      "prior": -3000.0,
+      "current": -5000.0,
+      "abs_change": -2000.0,
+      "pct_change": -0.6667,
+      "material": true
+    },
+    {
+      "line_code": "TOTAL_ASSETS",
+      "line_name": "Total assets",
+      "prior": 300000.0,
+      "current": 350000.0,
+      "abs_change": 50000.0,
+      "pct_change": 0.1667,
+      "material": true
+    },
+    {
+      "line_code": "TOTAL_CA",
+      "line_name": "Total current assets",
+      "prior": 100000.0,
+      "current": 125000.0,
+      "abs_change": 25000.0,
+      "pct_change": 0.25,
+      "material": true
+    },
+    {
+      "line_code": "TOTAL_CL",
+      "line_name": "Total current liabilities",
+      "prior": 50000.0,
+      "current": 60000.0,
+      "abs_change": 10000.0,
+      "pct_change": 0.2,
+      "material": true
+    },
+    {
+      "line_code": "TOTAL_LIAB",
+      "line_name": "Total liabilities",
+      "prior": 150000.0,
+      "current": 170000.0,
+      "abs_change": 20000.0,
+      "pct_change": 0.1333,
+      "material": true
+    }
+  ],
+  "observations": [
+    {
+      "id": "obs-e1da5ddcca",
+      "text": "Shareholders equity moved 20.0% YoY (150,000 → 180,000). Evidence: Shareholders equity 2022=150,000; Shareholders equity 2023=180,000.",
+      "severity": "warning",
+      "evidence_refs": [
+        "YOY-EQUITY"
+      ],
+      "useful_votes": 0,
+      "not_useful_votes": 0
+    },
+    {
+      "id": "obs-5ce65691c3",
+      "text": "Gross profit moved 50.0% YoY (40,000 → 60,000). Evidence: Gross profit 2022=40,000; Gross profit 2023=60,000.",
+      "severity": "warning",
+      "evidence_refs": [
+        "YOY-GROSS_PROFIT"
+      ],
+      "useful_votes": 0,
+      "not_useful_votes": 0
+    },
+    {
+      "id": "obs-daf4a63927",
+      "text": "Net income moved 80.0% YoY (15,000 → 27,000). Evidence: Net income 2022=15,000; Net income 2023=27,000.",
+      "severity": "warning",
+      "evidence_refs": [
+        "YOY-NET_INCOME"
+      ],
+      "useful_votes": 0,
+      "not_useful_votes": 0
+    },
+    {
+      "id": "obs-8f33fd3086",
+      "text": "Operating income moved 75.0% YoY (20,000 → 35,000). Evidence: Operating income 2022=20,000; Operating income 2023=35,000.",
+      "severity": "warning",
+      "evidence_refs": [
+        "YOY-OPERATING_INCOME"
+      ],
+      "useful_votes": 0,
+      "not_useful_votes": 0
+    },
+    {
+      "id": "obs-1ca176c5d8",
+      "text": "Revenue moved 40.0% YoY (100,000 → 140,000). Evidence: Revenue 2022=100,000; Revenue 2023=140,000.",
+      "severity": "warning",
+      "evidence_refs": [
+        "YOY-REVENUE"
+      ],
+      "useful_votes": 0,
+      "not_useful_votes": 0
+    },
+    {
+      "id": "obs-e802a8eed6",
+      "text": "Total assets moved 16.7% YoY (300,000 → 350,000). Evidence: Total assets 2022=300,000; Total assets 2023=350,000.",
+      "severity": "warning",
+      "evidence_refs": [
+        "YOY-TOTAL_ASSETS"
+      ],
+      "useful_votes": 0,
+      "not_useful_votes": 0
+    },
+    {
+      "id": "obs-f69d0cc513",
+      "text": "Total liabilities moved 13.3% YoY (150,000 → 170,000). Evidence: Total liabilities 2022=150,000; Total liabilities 2023=170,000.",
+      "severity": "warning",
+      "evidence_refs": [
+        "YOY-TOTAL_LIAB"
+      ],
+      "useful_votes": 0,
+      "not_useful_votes": 0
+    }
+  ],
+  "notifications_sent": [
+    "review-complete:logged"
+  ]
+}
